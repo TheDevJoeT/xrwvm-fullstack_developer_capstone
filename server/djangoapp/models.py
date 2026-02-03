@@ -3,12 +3,9 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from datetime import datetime
 
 
-
 class CarMake(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
-
-    # optional extra fields (allowed by instructions)
     country = models.CharField(max_length=50, blank=True)
     founded_year = models.IntegerField(null=True, blank=True)
 
@@ -16,19 +13,13 @@ class CarMake(models.Model):
         return self.name
 
 
-
 class CarModel(models.Model):
-
-    # Many models belong to one make
     car_make = models.ForeignKey(
         CarMake,
         on_delete=models.CASCADE,
         related_name="models"
     )
-
-    # dealer id from Cloudant
     dealer_id = models.IntegerField()
-
     name = models.CharField(max_length=100)
 
     CAR_TYPES = [
@@ -52,8 +43,6 @@ class CarModel(models.Model):
             MaxValueValidator(datetime.now().year)
         ]
     )
-
-    # optional extra field
     msrp = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
